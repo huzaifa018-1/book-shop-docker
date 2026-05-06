@@ -1,5 +1,9 @@
 
-# Huthaifa Nafeth Abu RAIDA 20221031
+# Huthaifa Nafeth Abu Raida 20221031
+
+# Django 4.0.4 Tutorial Series
+## Full Documentation is here 
+[Django 4.0.4 Best Practices Tutorial : Part 1](https://ayat.hashnode.dev/django-404-best-practices-tutorial-part-1)
 
 # Django Book Shop - Docker Deployment
 
