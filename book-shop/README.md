@@ -11,8 +11,8 @@ A containerized Django Book Shop application using Docker Compose with PostgreSQ
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/ayat93a/book_shop.git
-cd book_shop/book-shop
+git clone https://github.com/huzaifa018-1/book-shop-docker.git
+cd book-shop-docker
 ```
 
 2. Create environment file from template:
