@@ -1,13 +1,8 @@
-
-# Huthaifa Nafeth Abu Raida 20221031
-
-# Django 4.0.4 Tutorial Series
-## Full Documentation is here 
-[Django 4.0.4 Best Practices Tutorial : Part 1](https://ayat.hashnode.dev/django-404-best-practices-tutorial-part-1)
-
+cd ~/Desktop/book_shop/book-shop
+cat > README.md << 'EOF'
 # Django Book Shop - Docker Deployment
 
-A containerized Django Book Shop application using Docker Compose with PostgreSQL.
+A containerized Django Book Shop application using Docker Compose with PostgreSQL database and Nginx reverse proxy.
 
 ## Requirements
 
@@ -19,7 +14,7 @@ A containerized Django Book Shop application using Docker Compose with PostgreSQ
 1. Clone the repository:
 ```bash
 git clone https://github.com/huzaifa018-1/book-shop-docker.git
-cd book-shop-docker
+cd book-shop-docker/book-shop
 ```
 
 2. Create environment file from template:
@@ -45,11 +40,13 @@ docker-compose exec backend python manage.py createsuperuser
 6. Access the application:
 - Main app: http://localhost:8000
 - Admin panel: http://localhost:8000/admin
+- Nginx: http://localhost
 
 ## Services
 
 - **db**: PostgreSQL 15 database
-- **backend**: Django application with Gunicorn
+- **backend**: Django application with Gunicorn (port 8000)
+- **nginx**: Nginx reverse proxy (port 80)
 
 ## Environment Variables
 
@@ -60,14 +57,21 @@ See `.env.example` for required environment variables:
 - SECRET_KEY: Django secret key
 - ALLOWED_HOSTS: Allowed hostnames
 
-## Stopping Containers
+## Common Commands
 
 ```bash
+# Start containers
+docker-compose up --build
+
+# Stop containers
 docker-compose down
-```
 
-## Removing Volumes
-
-```bash
+# Remove volumes and data
 docker-compose down -v
+
+# View logs
+docker-compose logs backend
+
+# Run management commands
+docker-compose exec backend python manage.py <command>
 ```
