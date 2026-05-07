@@ -1,5 +1,3 @@
-cd ~/Desktop/book_shop/book-shop
-cat > README.md << 'EOF'
 # Django Book Shop - Docker Deployment
 
 A containerized Django Book Shop application using Docker Compose with PostgreSQL database and Nginx reverse proxy.
