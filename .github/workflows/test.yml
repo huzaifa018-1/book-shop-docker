@@ -1,0 +1,50 @@
+name: Test Pipeline (Image-First)
+
+on:
+  push:
+    branches:
+      - test
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build fresh artifact from source
+        run: |
+          mkdir -p book-shop/artifacts
+          tar -czf book-shop/artifacts/app-test-${{ github.run_number }}.tar.gz \
+            --exclude=.git \
+            --exclude=__pycache__ \
+            --exclude='*.pyc' \
+            --exclude=.env \
+            --exclude=artifacts \
+            -C book-shop .
+
+      - name: Login to Docker Hub
+        run: echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
+
+      - name: Build Docker image
+        run: |
+          cd book-shop
+          docker build \
+            --build-arg ARTIFACT_FILE=app-test-${{ github.run_number }}.tar.gz \
+            -t ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:test-${{ github.run_number }} .
+
+      - name: Push to Docker Hub
+        run: docker push ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:test-${{ github.run_number }}
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ vars.EC2_HOST }}
+          username: ec2-user
+          key: ${{ secrets.EC2_SSH_KEY }}
+          script: |
+            cd /home/ec2-user/book-shop-test
+            docker-compose -p test down
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:test-${{ github.run_number }}
+            sed -i "s|image:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:test-${{ github.run_number }}|" docker-compose.yml
+            docker-compose -p test up -d
