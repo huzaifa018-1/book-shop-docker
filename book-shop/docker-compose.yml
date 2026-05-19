@@ -9,9 +9,9 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
     volumes:
-      - postgres_data_${DEPLOY_ENV}:/var/lib/postgresql/data
+      - postgres_data:/var/lib/postgresql/data
     networks:
-      - book-shop-network-${DEPLOY_ENV}
+      - book-shop-network
     restart: always
 
   backend:
@@ -29,7 +29,7 @@ services:
     depends_on:
       - db
     networks:
-      - book-shop-network-${DEPLOY_ENV}
+      - book-shop-network
     restart: always
 
   nginx:
@@ -40,12 +40,12 @@ services:
     depends_on:
       - backend
     networks:
-      - book-shop-network-${DEPLOY_ENV}
+      - book-shop-network
     restart: always
 
 volumes:
-  postgres_data_${DEPLOY_ENV}:
+  postgres_data:
 
 networks:
-  book-shop-network-${DEPLOY_ENV}:
+  book-shop-network:
     driver: bridge
