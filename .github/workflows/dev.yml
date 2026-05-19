@@ -50,7 +50,7 @@ jobs:
           key: ${{ secrets.EC2_SSH_KEY }}
           script: |
             cd /home/ec2-user/book-shop-dev
-            docker-compose -p dev down
+            docker compose -p dev down
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:${{ github.sha }}
-            sed -i "s|image:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:${{ github.sha }}|" docker-compose.yml
-            docker-compose -p dev up -d
+            sed -i "s|image:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:${{ github.sha }}|" docker compose.yml
+            docker compose -p dev up -d
