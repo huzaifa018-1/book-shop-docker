@@ -25,5 +25,5 @@ jobs:
             cd /home/ec2-user/book-shop-prod
             docker compose -p prod down
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:${{ vars.IMAGE_VERSION }}
-            sed -i "s|image:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:${{ vars.IMAGE_VERSION }}|" docker compose.yml
+            sed -i "s|image:.*|image: ${{ secrets.DOCKERHUB_USERNAME }}/book-shop:${{ vars.IMAGE_VERSION }}|" docker-compose.yml
             docker compose -p prod up -d
